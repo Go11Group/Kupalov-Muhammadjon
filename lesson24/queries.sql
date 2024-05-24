@@ -28,3 +28,9 @@ ERROR:  insert or update on table "book" violates foreign key constraint "book_a
 DETAIL:  Key (author_id)=(3) is not present in table "author".
 book_store=# 
 
+-- Agar author tabledagi biror malumot bookga ulansa uniyam o'chirib bo'lmaydi chunki bu relationni buzadi.
+book_store=# delete from author where id = 1;
+ERROR:  update or delete on table "author" violates foreign key constraint "book_author_id_fkey" on table "book"
+DETAIL:  Key (id)=(1) is still referenced from table "book".
+
+
