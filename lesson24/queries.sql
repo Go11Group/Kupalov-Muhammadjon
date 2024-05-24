@@ -34,3 +34,18 @@ ERROR:  update or delete on table "author" violates foreign key constraint "book
 DETAIL:  Key (id)=(1) is still referenced from table "book".
 
 
+INSERT INTO author (name) VALUES ('Shekspeere');
+INSERT INTO author (name) VALUES ('qwerty');
+INSERT INTO author (name) VALUES ('qaz');
+INSERT INTO author (name) VALUES ('wsdcvbg');
+
+insert into book(name, page, author_id) values('bola', 327, 2)
+insert into book(name, page, author_id) values('Shum', 327, 2)
+insert into book(name, page, author_id) values('dfgh', 327, 1)
+insert into book(name, page, author_id) values('dftghy', 327, 4)
+insert into book(name, page, author_id) values('gfdr', 327, 3)
+insert into book(name, page, author_id) values('hgfgf', 327, 5)
+insert into book(name, page, author_id) values('gfgf', 327, 5)
+insert into book(name, page, author_id) values('gf', 327, 3)
+insert into book(name, page, author_id) values('hgfd', 327, 1)
+insert into book(name, page, author_id) values('bgfd', 327, 6)
