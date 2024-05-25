@@ -1,3 +1,5 @@
+--- CARS AND USERS degan joyiga etibor bermabman course bilan student ga qildim toliq ulangan many2many
+
 create table 
     courses(
         id serial primary key,
@@ -138,3 +140,5 @@ insert into
     on 
         s.id = cs.student_id
     group by c.id;
+
+-- 
