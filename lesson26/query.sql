@@ -130,7 +130,7 @@ max_scores as (
     group by course_id
 )
 
-select c.name, array_agg(s.name)
+select c.name, m.max_grade, array_agg(s.name)
 from course as c
 join max_scores as m
 on m.course_id = c.id
@@ -138,7 +138,7 @@ join students_avg_grade as sag
 on sag.course_id = c.id and m.max_grade = sag.avarage_grade
 join student as s
 on sag.student_id = s.id 
-group by c.name;
+group by c.name, m.max_grade;
 
 
 -- 3 task
