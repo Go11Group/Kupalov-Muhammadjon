@@ -35,7 +35,7 @@ values
     ('Clud', 24),insert into coursstudent_coursee(name)
 values
     ('Golang'),
-    ('Flutter'),
+    ('Flutter'),fmt.Println(db)
     ('Javascript'),
     ('Rust');
     ('Sheire', 22);
