@@ -1,9 +1,12 @@
 package main
 
 import (
-	"log"
+	// "log"
 
 	// "module/generator"
+
+	// "module/model"
+	"module/model"
 	"module/printer"
 	"module/storage/postgres"
 )
@@ -20,12 +23,17 @@ func main() {
 	// 	u.Create(users[i])
 	// }
 
-	users, err := u.GetAllUsers()
+	// users, err := u.GetAllUsers()
+	// if err != nil {
+	// 	log.Println("Cannot get users")
+	// }
+	// printer.PrintUsers(users)
+	filter := model.Filter{Age: 20}
+	users, err := u.GetByFilter(filter)
 	if err != nil {
-		log.Println("Cannot get users")
+		panic(err)
 	}
 	printer.PrintUsers(users)
-
 	// user, err := u.GetById((*users)[0].ID)
 	// if err != nil {
 	// 	log.Println("Cannot get users by id")
@@ -36,14 +44,17 @@ func main() {
 	// if err != nil {
 	// 	log.Println("Cannot get users by first_name")
 	// }
-	// printer.PrintUsers(users)
-
-	(*users)[0].FirstName = "Chello"
-	err = u.UpdateUser((*users)[0])
-	if err != nil {
-		log.Println("Cannot update user")
-	}
-	printer.PrintUser((*users)[0])
+	// printer.PrintUsers(users) = "Chello"
+	// err = u.UpdateUser((*users)[0])
+	// if err != nil {
+	// 	log.Println("Cannot update user")
+	// }
+	// printer.PrintUser((*users)[0])
+	// err = u.UpdateUser((*users)[0])
+	// if err != nil {
+	// 	log.Println("Cannot update user")
+	// }
+	// printer.PrintUser((*users)[0])
 
 	// err = u.DeleteUser((*users)[0].ID)
 	// if err != nil {

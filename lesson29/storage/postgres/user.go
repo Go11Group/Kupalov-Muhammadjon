@@ -23,24 +23,46 @@ func (u *UserRepo) GetAllUsers() (*[]model.User, error) {
 	u.db.Find(&users)
 	return &users, nil
 }
-func (u *UserRepo) GetById(id uint) (*model.User, error) {
-	user := model.User{}
-	tx := u.db.First(&user, id)
-	return &user, tx.Error
+func (u *UserRepo) GetByFilter(fil model.Filter) (*[]model.User, error) {
+	args := []interface{}{}
+	cond := ""
+	if fil.Age != nil {
+		args = append(args, *fil.Age)
+		cond += "age=? "
+	}
+	if fil.ID != 0 {
+		args = append(args, fil.ID)
+		cond += "and id=? "
+	}
+	if fil.Email != nil {
+		args = append(args, *fil.Email)
+		cond += "and email=? "
+	}
+	if fil.Field != nil {
+		args = append(args, *fil.Field)
+		cond += "and feild=? "
+	}
+	if fil.FirstName != nil {
+		args = append(args, *fil.FirstName)
+		cond += "and first_name=? "
+	}
+	if fil.LastName != nil {
+		args = append(args, *fil.LastName)
+		cond += "and last_name=? "
+	}
+	if fil.Password != nil {
+		args = append(args, *fil.Password)
+		cond += "and password=? "
+	}
+
+	users := []model.User{}
+	tx := u.db.Where(cond, args...).Find(&users)
+	return &users, tx.Error
 }
+
 func (u *UserRepo) GetByFirstName(firstName string) (*[]model.User, error) {
 	users := []model.User{}
 	u.db.Where("first_name = ?", firstName).Find(&users)
-	return &users, nil
-}
-func (u *UserRepo) GetByLastName(lastName string) (*[]model.User, error) {
-	users := []model.User{}
-	u.db.Where("last_name = ?", lastName).Find(&users)
-	return &users, nil
-}
-func (u *UserRepo) GetByGender(gender string) (*[]model.User, error) {
-	users := []model.User{}
-	u.db.Where("gender = ?", gender).Find(&users)
 	return &users, nil
 }
 
