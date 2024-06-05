@@ -47,6 +47,11 @@ func handleConnection(conn net.Conn, history *string, users map[net.Conn]string)
 		}
 		if _, ok := users[conn]; !ok {
 			users[conn] = message[:len(message)-1]
+			_, err = conn.Write([]byte(*history))
+			if err != nil {
+				log.Println("Error at writing massege: ", err)
+				return
+			}
 			continue
 		}
 		if len(*history) > 0 {
