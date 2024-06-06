@@ -161,17 +161,21 @@ func (s *StudentRepo) AssignCourse(student_id, course_id string) error {
 }
 
 // Delete
-func (s *StudentRepo) DeleteStudent(id string) error {
+func (s *StudentRepo) DeleteStudent(rw http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id")
 	query := `
-	delete from
-		student
-	where
-		id=$1
+		DELETE FROM student
+		WHERE id = $1
 	`
 	_, err := s.db.Exec(query, id)
-	return err
-}
+	if err != nil {
+		http.Error(rw, "Failed to delete student", http.StatusInternalServerError)
+		return
+	}
 
+	rw.WriteHeader(http.StatusOK)
+	rw.Write([]byte("Student deleted successfully"))
+}
 // func (s *StudentRepo) DeleteCourseOfStudent(id string) {
 
 // }
