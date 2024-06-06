@@ -28,7 +28,7 @@ func main() {
 	// 	log.Println("Cannot get users")
 	// }
 	// printer.PrintUsers(users)
-	filter := model.Filter{Age: 20}
+	filter := model.Filter{Age: }
 	users, err := u.GetByFilter(filter)
 	if err != nil {
 		panic(err)
