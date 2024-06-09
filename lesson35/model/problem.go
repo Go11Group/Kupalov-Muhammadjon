@@ -8,6 +8,7 @@ type Problem struct {
 	Description     string
 	Examples        []string
 	Hints           []string
+	Constraints     []string
 	Time
 }
 

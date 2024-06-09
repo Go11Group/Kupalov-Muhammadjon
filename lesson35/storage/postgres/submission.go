@@ -110,12 +110,13 @@ func (u *SubmissionRepo) UpdateSubmission(submission model.Submission) error {
 	defer tx.Commit()
 	query := `update submissions 
 	set 
-		code=$4,
-		submission_status=$5,
-		submission_date=$6
+		code=$1,
+		submission_status=$2,
+		submission_date=$3
+		updated_at=$4
 	where 
-		deleted_at is null and id = $7 `
-	_, err = tx.Exec(query, submission, time.Now(), submission.Id)
+		deleted_at is null and id = $5 `
+	_, err = tx.Exec(query, submission.Code, submission.SubmissionStatus, submission.SubmissionDate, time.Now(), submission.Id)
 
 	return err
 }

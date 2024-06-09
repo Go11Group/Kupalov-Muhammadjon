@@ -32,6 +32,14 @@ create table problems(
     description text not null,
     examples text[] not null,
     hints text[] not null,
+    constraints VARCHAR[],
+    created_at timestamp default current_timestamp,
+    updated_at timestamp,
+    deleted_at timestamp
+);
+create table languages(
+    id uuid primary key default gen_random_uuid(),
+    name varchar unique not null,
     created_at timestamp default current_timestamp,
     updated_at timestamp,
     deleted_at timestamp
@@ -50,17 +58,10 @@ create table submissions(
     deleted_at timestamp
 );
 
-create table languages(
-    id uuid primary key default gen_random_uuid(),
-    name varchar not null,
-    created_at timestamp default current_timestamp,
-    updated_at timestamp,
-    deleted_at timestamp
-);
 
 create table topics(
     id uuid primary key default gen_random_uuid(),
-    name varchar not null,
+    name varchar unique not null,
     created_at timestamp default current_timestamp,
     updated_at timestamp,
     deleted_at timestamp

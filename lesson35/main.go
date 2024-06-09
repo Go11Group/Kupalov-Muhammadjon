@@ -3,7 +3,8 @@ package main
 import (
 	// "fmt"
 	// "leetcode/model"
-	"leetcode/model"
+	"leetcode/generator"
+	// "leetcode/model"
 	"leetcode/storage/postgres"
 )
 
@@ -12,14 +13,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	u := postgres.NewProblemRepo(db)
-	newProblem := model.Problem{QuestionNumber: 1, Title: "Unique Path", DifficultyLevel: "Medium",
-	Description: "Find pathes", Examples: []string{"like this"}, Hints: []string{"be calm"}}
-	err = u.CreateProblem(newProblem)
-	if err != nil {
-		panic(err)
-	}
+	generator.GenerateAllMockData(db)
+	// u := postgres.NewProblemRepo(db)
+	// newProblem := model.Problem{QuestionNumber: 1, Title: "Unique Path", DifficultyLevel: "Medium",
+	// Description: "Find pathes", Examples: []string{"like this"}, Hints: []string{"be calm"}}
+	// err = u.CreateProblem(newProblem)
+	// if err != nil {
+	// 	panic(err)
+	// }
 	// f := model.UserFilter{}
 	// users, err := u.GetProblems(f)
 	// if err != nil {
