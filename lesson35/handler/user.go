@@ -30,7 +30,7 @@ func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
 	err = json.NewEncoder(w).Encode(users)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Println("Error while encoding", err)
+		log.Println("Error while encoding users", err)
 		return
 	}
 

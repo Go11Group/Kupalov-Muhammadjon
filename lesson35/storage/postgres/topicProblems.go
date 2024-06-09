@@ -46,7 +46,7 @@ func (l *TopicProblemRepo) GetTopicProblems(filter model.TopicProblemFilter) (*[
 	paramcount := 1
 	query := `
 	select * from topics_problems where deleted_at is null`
-	if filter.TopicsId != nil {
+	if filter.TopicId != nil {
 		query += fmt.Sprintf(" and topic_id=$%d", paramcount)
 		params = append(params, *filter.ProblemId)
 		paramcount++

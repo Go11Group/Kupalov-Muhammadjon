@@ -8,6 +8,6 @@ type TopicProblem struct {
 }
 
 type TopicProblemFilter struct{
-	TopicsId  *string
+	TopicId  *string
 	ProblemId *string
 }
