@@ -27,10 +27,10 @@ func (p *ProblemRepo) CreateProblem(problem model.Problem) error {
 	defer tx.Commit()
 	query := `
 	insert into 
-	problems(question_number, title, difficulty_level, description, examples, hints)
+	problems(question_number, title, difficulty_level, description, examples, hints, constraints)
 	values($1, $2, $3, $4, $5, $6)`
 	_, err = tx.Exec(query, problem.QuestionNumber, problem.Title, problem.DifficultyLevel, 
-	problem.Description, pq.Array(problem.Examples), pq.Array(problem.Hints))
+	problem.Description, pq.Array(problem.Examples), pq.Array(problem.Hints), pq.Array(problem.Constraints))
 
 	return err
 }
@@ -45,7 +45,7 @@ func (p *ProblemRepo) GetProblemById(id string) model.Problem {
 	`
 	row := p.Db.QueryRow(query, id)
 	row.Scan(&problem.Id, &problem.QuestionNumber, &problem.Title, &problem.DifficultyLevel, &problem.Description,
-		&problem.Examples, &problem.Hints, &problem.Created_at, &problem.Updated_at, &problem.Deleted_at)
+		&problem.Examples, &problem.Hints, &problem.Constraints, &problem.Created_at, &problem.Updated_at, &problem.Deleted_at)
 	return problem
 }
 func (p *ProblemRepo) GetProblems(filter model.ProblemFilter) (*[]model.Problem, error) {
@@ -106,11 +106,12 @@ func (p *ProblemRepo) UpdateProblem(problem model.Problem) error {
 		description=$3,
 		examples=$4,
 		hints=$5,
-		updated_at=$6
+		hints=$6,
+		updated_at=$7
 	where 
-		deleted_at is null and id = $7 `
+		deleted_at is null and id = $8 `
 	_, err = tx.Exec(query, problem.Title, problem.DifficultyLevel, problem.Description,
-		problem.Examples, problem.Hints, time.Now(), problem.Id)
+		problem.Examples, problem.Hints,problem.Constraints, time.Now(), problem.Id)
 
 	return err
 }

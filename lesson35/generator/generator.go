@@ -537,6 +537,191 @@ var problems = []model.Problem{
 			"-10^4 <= x^n <= 10^4",
 		},
 	},
+	{
+		QuestionNumber:  51,
+		Title:           "N-Queens",
+		DifficultyLevel: "Hard",
+		Description:     "The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.\n\nGiven an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.",
+		Examples: []string{
+			"Input: n = 4\nOutput: [['.Q..','...Q','Q...','..Q.'],['..Q.','Q...','...Q','.Q..']]\nExplanation: There exist two distinct solutions to the 4-queens puzzle as shown above.",
+			"Input: n = 1\nOutput: [['Q']]\nExplanation: The 1-queens puzzle has only one solution, which is shown above.",
+		},
+		Hints: []string{
+			"Use backtracking to try placing queens row by row and backtrack when a conflict is found.",
+			"Consider how to efficiently check conflicts for each placement of a queen.",
+		},
+		Constraints: []string{
+			"1 <= n <= 9",
+		},
+	},
+	{
+		QuestionNumber:  52,
+		Title:           "N-Queens II",
+		DifficultyLevel: "Hard",
+		Description:     "The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.\n\nGiven an integer n, return the number of distinct solutions to the n-queens puzzle.",
+		Examples: []string{
+			"Input: n = 4\nOutput: 2\nExplanation: There are two distinct solutions to the 4-queens puzzle as shown above.",
+			"Input: n = 1\nOutput: 1\nExplanation: The 1-queens puzzle has only one solution.",
+		},
+		Hints: []string{
+			"Use backtracking to try placing queens row by row and count valid solutions.",
+			"Consider how to efficiently check conflicts for each placement of a queen.",
+		},
+		Constraints: []string{
+			"1 <= n <= 9",
+		},
+	},
+	{
+		QuestionNumber:  53,
+		Title:           "Maximum Subarray",
+		DifficultyLevel: "Easy",
+		Description:     "Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.",
+		Examples: []string{
+			"Input: nums = [-2,1,-3,4,-1,2,1,-5,4]\nOutput: 6\nExplanation: [4,-1,2,1] has the largest sum = 6.",
+			"Input: nums = [1]\nOutput: 1",
+			"Input: nums = [5,4,-1,7,8]\nOutput: 23",
+		},
+		Hints: []string{
+			"Consider using Kadane's algorithm to solve this problem efficiently.",
+			"Think about how to keep track of the current maximum subarray sum as you iterate through the array.",
+		},
+		Constraints: []string{
+			"1 <= nums.length <= 3 * 10^4",
+			"-10^5 <= nums[i] <= 10^5",
+		},
+	},
+	{
+		QuestionNumber:  54,
+		Title:           "Spiral Matrix",
+		DifficultyLevel: "Medium",
+		Description:     "Given an m x n matrix, return all elements of the matrix in spiral order.",
+		Examples: []string{
+			"Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]\nOutput: [1,2,3,6,9,8,7,4,5]",
+			"Input: matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]\nOutput: [1,2,3,4,8,12,11,10,9,5,6,7]",
+		},
+		Hints: []string{
+			"Consider simulating the process of moving in a spiral order through the matrix.",
+			"Think about how to handle boundary conditions and direction changes efficiently.",
+		},
+		Constraints: []string{
+			"m == matrix.length",
+			"n == matrix[i].length",
+			"1 <= m, n <= 10",
+			"-100 <= matrix[i][j] <= 100",
+		},
+	},
+	{
+		QuestionNumber:  55,
+		Title:           "Jump Game",
+		DifficultyLevel: "Medium",
+		Description:     "Given an array of non-negative integers nums, you are initially positioned at the first index of the array.\nEach element in the array represents your maximum jump length at that position.\nDetermine if you can reach the last index.",
+		Examples: []string{
+			"Input: nums = [2,3,1,1,4]\nOutput: true\nExplanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.",
+			"Input: nums = [3,2,1,0,4]\nOutput: false\nExplanation: You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.",
+		},
+		Hints: []string{
+			"Use a greedy approach to keep track of the furthest reachable index.",
+			"Consider how to iterate through the array and update the maximum reachable index at each step.",
+		},
+		Constraints: []string{
+			"1 <= nums.length <= 10^4",
+			"0 <= nums[i] <= 10^5",
+		},
+	},
+	{
+		QuestionNumber:  56,
+		Title:           "Merge Intervals",
+		DifficultyLevel: "Medium",
+		Description:     "Given an array of intervals where intervals[i] = [start_i, end_i], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.",
+		Examples: []string{
+			"Input: intervals = [[1,3],[2,6],[8,10],[15,18]]\nOutput: [[1,6],[8,10],[15,18]]\nExplanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].",
+			"Input: intervals = [[1,4],[4,5]]\nOutput: [[1,5]]\nExplanation: Intervals [1,4] and [4,5] are considered overlapping.",
+		},
+		Hints: []string{
+			"Sort the intervals based on their start times to simplify the merging process.",
+			"Iterate through the sorted intervals and merge overlapping intervals.",
+		},
+		Constraints: []string{
+			"1 <= intervals.length <= 10^4",
+			"intervals[i].length == 2",
+			"0 <= start_i <= end_i <= 10^4",
+		},
+	},
+	{
+		QuestionNumber:  57,
+		Title:           "Insert Interval",
+		DifficultyLevel: "Hard",
+		Description:     "Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).\n\nYou may assume that the intervals were initially sorted according to their start times.",
+		Examples: []string{
+			"Input: intervals = [[1,3],[6,9]], newInterval = [2,5]\nOutput: [[1,5],[6,9]]\nExplanation: Insert [2,5] into the intervals [1,3] and [6,9] and merge them to [1,5],[6,9].",
+			"Input: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]\nOutput: [[1,2],[3,10],[12,16]]\nExplanation: Insert [4,8] into the intervals [3,5],[6,7],[8,10] and merge them to [3,10].",
+		},
+		Hints: []string{
+			"Sort the intervals based on their start times to simplify the insertion process.",
+			"Consider how to handle the merging of intervals after inserting the new interval.",
+		},
+		Constraints: []string{
+			"0 <= intervals.length <= 10^4",
+			"intervals[i].length == 2",
+			"0 <= intervals[i][0] <= intervals[i][1] <= 10^5",
+			"intervals is sorted by intervals[i][0] in ascending order.",
+		},
+	},
+	{
+		QuestionNumber:  58,
+		Title:           "Length of Last Word",
+		DifficultyLevel: "Easy",
+		Description:     "Given a string s consisting of some words separated by some number of spaces, return the length of the last word in the string.\nA word is a maximal substring consisting of non-space characters only.",
+		Examples: []string{
+			"Input: s = \"Hello World\"\nOutput: 5\nExplanation: The last word is \"World\" with length 5.",
+			"Input: s = \"   fly me   to   the moon  \"\nOutput: 4\nExplanation: The last word is \"moon\" with length 4.",
+			"Input: s = \"\"\nOutput: 0",
+		},
+		Hints: []string{
+			"Trim the trailing and leading spaces of the string before processing.",
+			"Scan the string from the end to find the last word and calculate its length.",
+		},
+		Constraints: []string{
+			"1 <= s.length <= 10^4",
+			"s consists of only English letters and spaces ' '.",
+			"There will be at least one word in s.",
+		},
+	},
+	{
+		QuestionNumber:  59,
+		Title:           "Spiral Matrix II",
+		DifficultyLevel: "Medium",
+		Description:     "Given a positive integer n, generate an n x n matrix filled with elements from 1 to n^2 in spiral order.",
+		Examples: []string{
+			"Input: n = 3\nOutput: [[1,2,3],[8,9,4],[7,6,5]]",
+			"Input: n = 1\nOutput: [[1]]",
+		},
+		Hints: []string{
+			"Simulate the process of filling the matrix in spiral order.",
+			"Keep track of the boundaries and direction changes while filling the matrix.",
+		},
+		Constraints: []string{
+			"1 <= n <= 20",
+		},
+	},
+	{
+		QuestionNumber:  60,
+		Title:           "Permutation Sequence",
+		DifficultyLevel: "Medium",
+		Description:     "The set [1, 2, 3, ..., n] contains a total of n! unique permutations.\nBy listing and labeling all of the permutations in order, return the kth permutation sequence.",
+		Examples: []string{
+			"Input: n = 3, k = 3\nOutput: \"213\"\nExplanation: The permutations of [1,2,3] are \"123\", \"132\", \"213\", \"231\", \"312\", and \"321\". The 3rd permutation is \"213\".",
+			"Input: n = 4, k = 9\nOutput: \"2314\"",
+		},
+		Hints: []string{
+			"Use a factorial-based approach to determine the digit at each position.",
+			"Consider how to efficiently find and construct the kth permutation sequence.",
+		},
+		Constraints: []string{
+			"1 <= n <= 9",
+			"1 <= k <= n!",
+		},
+	},
 
 
 }
