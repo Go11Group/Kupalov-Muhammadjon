@@ -29,7 +29,7 @@ func (l *TopicRepo) CreateTopic(topic model.Topic) error {
 }
 
 // Read
-func (l *TopicRepo) GetTopicById(id string) model.Topic {
+func (l *TopicRepo) GetTopicById(id string) (model.Topic, error) {
 	topic := model.Topic{}
 	query := `
 	select * from topics
@@ -37,8 +37,8 @@ func (l *TopicRepo) GetTopicById(id string) model.Topic {
 		id = $1 and deleted_at is null
 	`
 	row := l.Db.QueryRow(query, id)
-	row.Scan(&topic.Id, &topic.Name, &topic.Created_at, &topic.Updated_at, &topic.Deleted_at)
-	return topic
+	err := row.Scan(&topic.Id, &topic.Name, &topic.Created_at, &topic.Updated_at, &topic.Deleted_at)
+	return topic, err
 }
 func (l *TopicRepo) GetTopics(filter model.TopicFilter) (*[]model.Topic, error) {
 	params := []interface{}{}

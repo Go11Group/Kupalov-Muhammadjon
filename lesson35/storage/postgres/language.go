@@ -29,7 +29,7 @@ func (l *LanguageRepo) CreateLanguage(language model.Language) error {
 }
 
 // Read
-func (l *LanguageRepo) GetLanguageById(id string) model.Language {
+func (l *LanguageRepo) GetLanguageById(id string) (model.Language, error) {
 	language := model.Language{}
 	query := `
 	select * from languages
@@ -37,8 +37,8 @@ func (l *LanguageRepo) GetLanguageById(id string) model.Language {
 		id = $1 and deleted_at is null
 	`
 	row := l.Db.QueryRow(query, id)
-	row.Scan(&language.Id, &language.Name, &language.Created_at, &language.Updated_at, &language.Deleted_at)
-	return language
+	err := row.Scan(&language.Id, &language.Name, &language.Created_at, &language.Updated_at, &language.Deleted_at)
+	return language, err
 }
 func (l *LanguageRepo) GetLanguages(filter model.LanguageFilter) (*[]model.Language, error) {
 	params := []interface{}{}

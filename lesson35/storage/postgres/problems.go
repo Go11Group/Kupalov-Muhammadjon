@@ -28,7 +28,7 @@ func (p *ProblemRepo) CreateProblem(problem model.Problem) error {
 	query := `
 	insert into 
 	problems(question_number, title, difficulty_level, description, examples, hints, constraints)
-	values($1, $2, $3, $4, $5, $6)`
+	values($1, $2, $3, $4, $5, $6, $7)`
 	_, err = tx.Exec(query, problem.QuestionNumber, problem.Title, problem.DifficultyLevel, 
 	problem.Description, pq.Array(problem.Examples), pq.Array(problem.Hints), pq.Array(problem.Constraints))
 
@@ -36,7 +36,7 @@ func (p *ProblemRepo) CreateProblem(problem model.Problem) error {
 }
 
 // Read
-func (p *ProblemRepo) GetProblemById(id string) model.Problem {
+func (p *ProblemRepo) GetProblemById(id string) (model.Problem, error) {
 	problem := model.Problem{}
 	query := `
 	select * from problems
@@ -44,15 +44,19 @@ func (p *ProblemRepo) GetProblemById(id string) model.Problem {
 		id = $1 and deleted_at is null
 	`
 	row := p.Db.QueryRow(query, id)
-	row.Scan(&problem.Id, &problem.QuestionNumber, &problem.Title, &problem.DifficultyLevel, &problem.Description,
-		&problem.Examples, &problem.Hints, &problem.Constraints, &problem.Created_at, &problem.Updated_at, &problem.Deleted_at)
-	return problem
+	err := row.Scan(&problem.Id, &problem.QuestionNumber, &problem.Title, &problem.DifficultyLevel, &problem.Description,
+		pq.Array(&problem.Examples), pq.Array(&problem.Hints), pq.Array(&problem.Constraints), 
+		&problem.Created_at, &problem.Updated_at, &problem.Deleted_at)
+
+	
+	return problem, err
 }
+
 func (p *ProblemRepo) GetProblems(filter model.ProblemFilter) (*[]model.Problem, error) {
 	params := []interface{}{}
-	paramCount := 0
+	paramCount := 1
 	query := `
-	select * from users where deleted_at is null`
+	select * from problems where deleted_at is null`
 	if filter.QuestionNumber != nil {
 		query += fmt.Sprintf(" and question_number=$%d", paramCount)
 		params = append(params, *filter.QuestionNumber)
@@ -78,7 +82,8 @@ func (p *ProblemRepo) GetProblems(filter model.ProblemFilter) (*[]model.Problem,
 	for rows.Next() {
 		problem := model.Problem{}
 		err = rows.Scan(&problem.Id, &problem.QuestionNumber, &problem.Title, &problem.DifficultyLevel, &problem.Description,
-			&problem.Examples, &problem.Hints, &problem.Created_at, &problem.Updated_at, &problem.Deleted_at)
+			pq.Array(&problem.Examples), pq.Array(&problem.Hints), pq.Array(&problem.Constraints), 
+			&problem.Created_at, &problem.Updated_at, &problem.Deleted_at)
 		if err != nil {
 			return nil, err
 		}

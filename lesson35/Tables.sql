@@ -17,7 +17,7 @@ create type status as enum(
 create table users(
     id uuid primary key default gen_random_uuid(),
     full_name varchar not null,
-    username varchar not null,
+    username varchar unique not null,
     bio varchar not null,
     created_at timestamp default current_timestamp,
     updated_at timestamp,
@@ -37,6 +37,7 @@ create table problems(
     updated_at timestamp,
     deleted_at timestamp
 );
+
 create table languages(
     id uuid primary key default gen_random_uuid(),
     name varchar unique not null,

@@ -30,7 +30,7 @@ func (u *UserRepo) CreateUser(user model.User) error{
 }
 
 // Read
-func (u *UserRepo) GetUserById(id string) model.User{
+func (u *UserRepo) GetUserById(id string) (model.User, error){
 	user := model.User{}
 	query := `
 	select * from users
@@ -38,12 +38,12 @@ func (u *UserRepo) GetUserById(id string) model.User{
 		id = $1 and deleted_at is null
 	`
 	row := u.Db.QueryRow(query, id)
-	row.Scan(&user.Id, &user.FullName, &user.Username, &user.Bio, &user.Created_at, &user.Updated_at, &user.Deleted_at)
-	return user
+	err := row.Scan(&user.Id, &user.FullName, &user.Username, &user.Bio, &user.Created_at, &user.Updated_at, &user.Deleted_at)
+	return user, err
 }
 func (u *UserRepo) GetUsers(filter model.UserFilter) (*[]model.User, error){
 	params := []interface{}{}
-	paramCount := 0
+	paramCount := 1
 	query := `
 	select * from users where deleted_at is null`
 	if filter.FullName != nil{

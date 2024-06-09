@@ -32,7 +32,7 @@ func (u *SubmissionRepo) CreateSubmission(submission model.Submission) error {
 }
 
 // Read
-func (u *SubmissionRepo) GetSubmissionById(id string) model.Submission {
+func (u *SubmissionRepo) GetSubmissionById(id string) (model.Submission, error) {
 	submission := model.Submission{}
 	query := `
 	select * from submissions
@@ -40,15 +40,15 @@ func (u *SubmissionRepo) GetSubmissionById(id string) model.Submission {
 		id = $1 and deleted_at is null
 	`
 	row := u.Db.QueryRow(query, id)
-	row.Scan(&submission.Id, &submission.ProblemId, &submission.UserId, &submission.LanguageId, &submission.Code,
+	err := row.Scan(&submission.Id, &submission.ProblemId, &submission.UserId, &submission.LanguageId, &submission.Code,
 		&submission.SubmissionStatus, &submission.SubmissionDate, &submission.Created_at,
 		&submission.Updated_at, &submission.Deleted_at)
 
-	return submission
+	return submission, err
 }
 func (u *SubmissionRepo) GetSubmissions(filter model.SubmissionFilter) (*[]model.Submission, error) {
 	params := []interface{}{}
-	paramCount := 0
+	paramCount := 1
 	query := `
 	select * from submissions where deleted_at is null`
 	if filter.ProblemId != nil {
