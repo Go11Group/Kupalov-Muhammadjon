@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Read
 func (h *Handler) GetLanguages(w http.ResponseWriter, r *http.Request) {
 	filter := model.LanguageFilter{}
 	query := r.URL.Query()
@@ -51,6 +52,7 @@ func (h *Handler) GetLanguageByID(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Create
 func (h *Handler) CreateLanguage(w http.ResponseWriter, r *http.Request) {
 	newlanguage := model.Language{}
 	err := json.NewDecoder(r.Body).Decode(&newlanguage)
@@ -67,6 +69,7 @@ func (h *Handler) CreateLanguage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Update
 func (h *Handler) UpdateLanguage(w http.ResponseWriter, r *http.Request) {
 	language := model.Language{}
 	vars := mux.Vars(r)
@@ -87,6 +90,7 @@ func (h *Handler) UpdateLanguage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Delete
 func (h *Handler) DeleteLanguage(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)

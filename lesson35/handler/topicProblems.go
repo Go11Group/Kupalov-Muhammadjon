@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Read
 func (h *Handler) GetTopicProblems(w http.ResponseWriter, r *http.Request) {
 	filter := model.TopicProblemFilter{}
 	query := r.URL.Query()
@@ -24,14 +25,14 @@ func (h *Handler) GetTopicProblems(w http.ResponseWriter, r *http.Request) {
 	TopicProblems, err := h.TopicProblemRepo.GetTopicProblems(filter)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Println("Error getting TopicProblems",err)
+		log.Println("Error getting TopicProblems ",err)
 		return
 	} 
 
 	err = json.NewEncoder(w).Encode(TopicProblems)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Println("Error while encoding TopicProblems", err)
+		log.Println("Error while encoding TopicProblems ", err)
 		return
 	}
 
@@ -44,17 +45,53 @@ func (h *Handler) GetTopicProblemByID(w http.ResponseWriter, r *http.Request) {
 	TopicProblem, err := h.TopicProblemRepo.GetTopicProblemById(id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Println("Error getting TopicProblem by Id", err)
+		log.Println("Error getting TopicProblem by Id ", err)
 		return
 	}
 	err = json.NewEncoder(w).Encode(TopicProblem)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Println("Error while encoding TopicProblem", err)
+		log.Println("Error while encoding TopicProblem ", err)
 		return
 	}
 }
 
+func (h *Handler) GetProblemsByTopicId(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	topicId := vars["topic_id"]
+
+	problems, err := h.TopicProblemRepo.GetTopicProblemById(topicId)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		log.Println("Error getting problems by topic_id ", err)
+		return
+	}
+	err = json.NewEncoder(w).Encode(problems)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		log.Println("Error while encoding problems ", err)
+		return
+	}
+}
+func (h *Handler) GetTopicsByProblemId(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	problemId := vars["problem_id"]
+
+	problems, err := h.TopicProblemRepo.GetTopicsByProblemId(problemId)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		log.Println("Error getting topics by problem_id ", err)
+		return
+	}
+	err = json.NewEncoder(w).Encode(problems)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		log.Println("Error while encoding topics ", err)
+		return
+	}
+}
+
+// create
 func (h *Handler) CreateTopicProblem(w http.ResponseWriter, r *http.Request) {
 	newTopicProblem := model.TopicProblem{}
 	err := json.NewDecoder(r.Body).Decode(&newTopicProblem)
@@ -71,6 +108,7 @@ func (h *Handler) CreateTopicProblem(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Update
 func (h *Handler) UpdateTopicProblem(w http.ResponseWriter, r *http.Request) {
 	TopicProblem := model.TopicProblem{}
 	vars := mux.Vars(r)
@@ -91,6 +129,7 @@ func (h *Handler) UpdateTopicProblem(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Delete
 func (h *Handler) DeleteTopicProblem(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)

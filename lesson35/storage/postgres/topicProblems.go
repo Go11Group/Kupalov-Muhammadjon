@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"leetcode/model"
 	"time"
+
+	"github.com/lib/pq"
 )
 
 type TopicProblemRepo struct {
@@ -41,6 +43,7 @@ func (l *TopicProblemRepo) GetTopicProblemById(id string) (model.TopicProblem, e
 	err := row.Scan(&topicProblem.Id, &topicProblem.TopicId, &topicProblem.ProblemId, &topicProblem.Created_at, &topicProblem.Updated_at, &topicProblem.Deleted_at)
 	return topicProblem, err
 }
+
 func (l *TopicProblemRepo) GetTopicProblems(filter model.TopicProblemFilter) (*[]model.TopicProblem, error) {
 	params := []interface{}{}
 	paramcount := 1
@@ -78,6 +81,81 @@ func (l *TopicProblemRepo) GetTopicProblems(filter model.TopicProblemFilter) (*[
 	}
 
 	return &topicProblems, nil
+}
+func (t *TopicProblemRepo) GetProblemsByTopicId(topicId string) (*[]model.Problem, error) {
+	query := `
+	select 
+		p.id, p.question_number, p.title, p.difficulty_level, p.description, p.examples, p.hints, p.constraints
+	from 
+		topics_problems as tp
+	join
+		topics as t
+	on 
+		tp.topic_id = t.id and t.deleted_at is null
+	join
+		problems as p
+	on 
+		p.id = tp.problem_id and p.deleted_at is null
+	where
+		tp.topic_id = $1 and tp.deleted_at is null
+	`
+
+	rows, err := t.Db.Query(query, topicId)
+	if err != nil {
+		return nil, err
+	}
+
+	problems := []model.Problem{}
+	for rows.Next() {
+		problem := model.Problem{}
+		err := rows.Scan(&problem.Id, &problem.QuestionNumber, &problem.Title, 
+			&problem.DifficultyLevel, &problem.Description,
+			pq.Array(&problem.Examples), pq.Array(&problem.Hints), pq.Array(&problem.Constraints))
+		if err != nil {
+			return nil, err
+		}
+		problems = append(problems, problem)
+	}
+	err = rows.Err()
+
+	return &problems, err
+}
+
+func (t *TopicProblemRepo) GetTopicsByProblemId(problemId string) (*[]model.Topic, error) {
+	query := `
+	select 
+		t.id, t.name
+	from 
+		topics_problems as tp
+	join
+		topics as t
+	on 
+		tp.topic_id = t.id and t.deleted_at is null
+	join
+		problems as p
+	on 
+		p.id = tp.problem_id and p.deleted_at is null
+	where
+		tp.problem_id = 'c81c3b88-6937-47cc-9a8f-32f195911209' and tp.deleted_at is null
+	`
+
+	rows, err := t.Db.Query(query, problemId)
+	if err != nil {
+		return nil, err
+	}
+
+	topics := []model.Topic{}
+	for rows.Next() {
+		topic := model.Topic{}
+		err := rows.Scan(&topic.Id, &topic.Name)
+		if err != nil {
+			return nil, err
+		}
+		topics = append(topics, topic)
+	}
+	err = rows.Err()
+
+	return &topics, err
 }
 
 // Update
