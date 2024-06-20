@@ -1,6 +1,12 @@
 package router
 
 import (
+	"github.com/gin-gonic/gin"
+    swag "github.com/swaggo/swag/example/basic/docs"
+    "net/http"
+    _ "github.com/swaggo/gin-swagger"
+    ginSwagger "github.com/swaggo/gin-swagger"
+    "github.com/swaggo/gin-swagger/swaggerFiles"
 	"leetcode/handler"
 
 	"github.com/gorilla/mux"
