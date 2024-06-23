@@ -41,7 +41,7 @@ func CreateServer() *http.Server {
 	terminal.PUT("/:id/update", h.Handle)
 	terminal.DELETE("/:id/delete", h.Handle)
 
-	transaction := r.Group("/terminals")
+	transaction := r.Group("/transactions")
 	transaction.GET("/all", h.Handle)
 	transaction.GET("/:id", h.Handle)
 	transaction.POST("/create", h.Handle)
