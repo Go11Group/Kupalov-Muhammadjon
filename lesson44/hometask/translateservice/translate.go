@@ -1,11 +1,12 @@
 package main
 
 import (
+	pb "Go11Group/Kupalov-Muhammadjon/lesson44/hometask/proto/translator"
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"net/http"
-	pb "mod/proto/translator"
 
 	"google.golang.org/grpc"
 )
@@ -15,15 +16,20 @@ type TranslatorServer struct {
 }
 
 func main() {
-	listener, err := net.Listen("tcp", ":8080")
+	listener, err := net.Listen("tcp", ":50051")
 
 	s := grpc.NewServer()
 	pb.RegisterTranslatorServer(s, &TranslatorServer{})
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	http.Serve(listener, nil)
+	err = http.Serve(listener, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	
 }
 
 func (t *TranslatorServer) Translate(ctx context.Context, words *pb.Request) (*pb.Translation, error) {
@@ -36,6 +42,7 @@ func (t *TranslatorServer) Translate(ctx context.Context, words *pb.Request) (*p
 			res = append(res, "not found")
 		}
 	}
+	fmt.Println(res)
 
 	return &pb.Translation{Translations: res}, nil
 }

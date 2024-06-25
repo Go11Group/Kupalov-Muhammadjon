@@ -1,4 +1,4 @@
-module mod
+module Go11Group/Kupalov-Muhammadjon/lesson44/hometask
 
 go 1.22.4
 
