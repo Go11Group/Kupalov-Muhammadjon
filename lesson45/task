@@ -1,0 +1,31 @@
+
+Servis nomi: LibraryService
+Metodlar:
+AddBook: Yangi kitob qo'shish uchun.
+SearchBook: Kutubxonada kitobni qidirish uchun.
+BorrowBook: KuLibraryServicetubxonadan kitobni ijaraga olish uchun.
+2. Proto faylida xabarlarni aniqlash
+Har bir metod uchun kerakli xabarlarni (message) aniqlang:
+
+AddBookRequest:
+string title: Kitob nomi.
+string author: Kitob muallifi.
+int32 year_published: Kitob nashr etilgan yil.
+
+AddBookResponse:
+string book_id: Kitobning noyob identifikatori.
+
+SearchBookRequest:
+string query: Qidiruv so'rovi (kitob nomi yoki muallifi).
+
+SearchBookResponse:
+repeated Book books: Topilgan kitoblar ro'yxati.
+
+BorrowBookRequest:
+string book_id: Ijaraga olinayotgan kitobning identifikatori.
+string user_id: Foydalanuvchi identifikatori.
+
+BorrowBookResponse:
+bool success: Ijaraga olish muvaffaqiyatli yoki yo'qligi.
+
+`

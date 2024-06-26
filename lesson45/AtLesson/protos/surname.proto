@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package genproto;
+
+service Server {
+    rpc GetSurname(Request) returns (Surname);
+}
+
+message Request {
+    string Name = 1;
+}
+message Surname {
+    string Surname = 1;
+}
