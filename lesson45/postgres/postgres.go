@@ -3,6 +3,7 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
+	_ "github.com/lib/pq"
 )
 
 const (
@@ -22,6 +23,6 @@ func ConnectDB() (*sql.DB, error) {
 		return nil, err
 	}
 	err = db.Ping()
-	
+
 	return db, err
 }
