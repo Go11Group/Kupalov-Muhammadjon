@@ -4,6 +4,8 @@ option go_package = "/genproto/WheatherService";
 
 package genproto;
 
+import "google/protobuf/timestamp.proto";
+
 service WheatherService{
   rpc GetCurrentWeather(CurrentWheatherRequest) returns (CurrentWheatherResponse);
   rpc GetWeatherForecast(ForecastWheatherRequest) returns (ForecastWheatherResponse);
@@ -15,7 +17,7 @@ message CurrentWheatherRequest{
 }
 
 message CurrentWheatherResponse{
-  string LocalTime = 1;
+  google.protobuf.Timestamp LocalTime = 1;
   string Country = 2;
   float TempC = 3;
   float WindKmph = 4;
@@ -33,7 +35,7 @@ message ForecastWheatherResponse{
 
 message Forecast{
   string City = 1;
-  string LocalTime = 2;
+  google.protobuf.Timestamp LocalTime = 2;
   string Country = 3;
   float TempC = 4;
   float WindKmph = 5;
@@ -42,7 +44,7 @@ message Forecast{
 
 message ReportWheatherRequest {
   string City = 1;
-  string LocalTime = 2;
+  google.protobuf.Timestamp LocalTime = 2;
   string Country = 3;
   float TempC = 4;
   float WindKmph = 5;

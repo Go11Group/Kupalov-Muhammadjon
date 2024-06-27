@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TransportServiceClient interface {
 	GetBusSchedule(ctx context.Context, in *BusScheduleRequest, opts ...grpc.CallOption) (*BusScheduleResponse, error)
-	TrackBusLocation(ctx context.Context, in *BusLocationRequest, opts ...grpc.CallOption) (*Station, error)
+	TrackBusLocation(ctx context.Context, in *BusLocationRequest, opts ...grpc.CallOption) (*BusLocationResponse, error)
 	ReportTrafficJam(ctx context.Context, in *TrafficJamRequest, opts ...grpc.CallOption) (*TrafficJamResponse, error)
 }
 
@@ -44,8 +44,8 @@ func (c *transportServiceClient) GetBusSchedule(ctx context.Context, in *BusSche
 	return out, nil
 }
 
-func (c *transportServiceClient) TrackBusLocation(ctx context.Context, in *BusLocationRequest, opts ...grpc.CallOption) (*Station, error) {
-	out := new(Station)
+func (c *transportServiceClient) TrackBusLocation(ctx context.Context, in *BusLocationRequest, opts ...grpc.CallOption) (*BusLocationResponse, error) {
+	out := new(BusLocationResponse)
 	err := c.cc.Invoke(ctx, "/genproto.TransportService/TrackBusLocation", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -67,7 +67,7 @@ func (c *transportServiceClient) ReportTrafficJam(ctx context.Context, in *Traff
 // for forward compatibility
 type TransportServiceServer interface {
 	GetBusSchedule(context.Context, *BusScheduleRequest) (*BusScheduleResponse, error)
-	TrackBusLocation(context.Context, *BusLocationRequest) (*Station, error)
+	TrackBusLocation(context.Context, *BusLocationRequest) (*BusLocationResponse, error)
 	ReportTrafficJam(context.Context, *TrafficJamRequest) (*TrafficJamResponse, error)
 	mustEmbedUnimplementedTransportServiceServer()
 }
@@ -79,7 +79,7 @@ type UnimplementedTransportServiceServer struct {
 func (UnimplementedTransportServiceServer) GetBusSchedule(context.Context, *BusScheduleRequest) (*BusScheduleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBusSchedule not implemented")
 }
-func (UnimplementedTransportServiceServer) TrackBusLocation(context.Context, *BusLocationRequest) (*Station, error) {
+func (UnimplementedTransportServiceServer) TrackBusLocation(context.Context, *BusLocationRequest) (*BusLocationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TrackBusLocation not implemented")
 }
 func (UnimplementedTransportServiceServer) ReportTrafficJam(context.Context, *TrafficJamRequest) (*TrafficJamResponse, error) {

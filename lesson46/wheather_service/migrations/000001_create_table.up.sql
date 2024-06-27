@@ -1,0 +1,1 @@
+create table wheather(city varchar, country varchar, local_time varchar, tempC float, windKmph float, humidity int);
