@@ -5,6 +5,7 @@ import (
 	"Go11Group/Kupalov-Muhammadjon/lesson46/transportService/storage/postgres"
 	"context"
 	"database/sql"
+	"fmt"
 )
 
 type TransportService struct {
@@ -27,6 +28,7 @@ func (t *TransportService) GetBusSchedule(ctx context.Context, r *pb.BusSchedule
 func (t *TransportService) TrackBusLocation(ctx context.Context, r *pb.BusLocationRequest) (*pb.BusLocationResponse, error) {
 	st, err := t.TransportRepo.TrackBusLocation(r.BusNumber)
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 	return &pb.BusLocationResponse{Station: st}, nil

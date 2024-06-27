@@ -3,6 +3,8 @@ package postgres
 import (
 	pb "Go11Group/Kupalov-Muhammadjon/lesson46/wheather_service/genproto/WheatherService"
 	"database/sql"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"time"
 )
 
 type WheatherRepo struct {
@@ -16,18 +18,25 @@ func NewWheatherRepo(db *sql.DB) *WheatherRepo {
 func (w *WheatherRepo) GetCurrentWheather(city string) (*pb.CurrentWheatherResponse, error) {
 	cur := &pb.CurrentWheatherResponse{}
 	query := `
-	select
-		local_time, country, tempC, windKmph, humidity
-	from
-	    wheather
-	where 
-	    city = $1
-`
+		SELECT
+			local_time, country, tempC, windKmph, humidity
+		FROM
+			wheather
+		WHERE 
+			city = $1
+	`
+	var localTime time.Time
+
 	row := w.Db.QueryRow(query, city)
-	err := row.Scan(&cur.LocalTime, &cur.Country, &cur.WindKmph, &cur.TempC)
+	err := row.Scan(&localTime, &cur.Country, &cur.TempC, &cur.WindKmph, &cur.Humidity)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, err
 	}
+
+	cur.LocalTime = timestamppb.New(localTime)
 
 	return cur, nil
 }
