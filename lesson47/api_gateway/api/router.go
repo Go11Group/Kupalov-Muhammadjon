@@ -1,23 +1,32 @@
 package api
 
 import (
-	pb "Go11Group/Kupalov-Muhammadjon/lesson46/transportService/genproto/TransportService"
-	"context"
-	"fmt"
+	"Go11Group/Kupalov-Muhammadjon/lesson47/api_gateway/api/handler"
+	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"net/http"
 )
 
-func main() {
-	conn, err := grpc.NewClient("localhost:55555", grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		panic(err)
+func NewRouter(conn *grpc.ClientConn) *http.Server {
+
+	handler := handler.NewHandler(conn)
+
+	router := gin.Default()
+
+	weather := router.Group("/weather")
+
+	weather.GET("/current/", handler.GetCurrentWeather)
+	weather.GET("/forecast/", handler.GetWeatherForecast)
+	weather.POST("/report/", handler.ReportWeather)
+
+	transport := router.Group("/transport")
+
+	transport.GET("/busschedule/", handler.GetBusSchedule)
+	transport.GET("/buslocation/", handler.TrackBusLocation)
+	transport.POST("/report/", handler.ReportTrafficJam)
+
+	return &http.Server{
+		Addr:    ":8080",
+		Handler: router,
 	}
-	defer conn.Close()
-	c := pb.NewTransportServiceClient(conn)
-	resp, err := c.TrackBusLocation(context.Background(), &pb.BusLocationRequest{BusNumber: 114})
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(resp)
 }

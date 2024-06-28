@@ -12,3 +12,6 @@ tidy:
 
 get-permission:
 	@chmod +x ./scripts/gen-proto.sh
+
+run:
+	@go run cmd/main.go

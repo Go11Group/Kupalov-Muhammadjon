@@ -6,12 +6,12 @@ import (
 	"google.golang.org/grpc"
 )
 
-func CreateTransportServicClient(conn *grpc.ClientConn) *pbt.TransportServiceClient {
+func CreateTransportServiceClient(conn *grpc.ClientConn) *pbt.TransportServiceClient {
 	trc := pbt.NewTransportServiceClient(conn)
 	return &trc
 }
 
-func CreateWheatherServicClient(conn *grpc.ClientConn) *pbw.WheatherServiceClient {
+func CreateWheatherServiceClient(conn *grpc.ClientConn) *pbw.WheatherServiceClient {
 	whc := pbw.NewWheatherServiceClient(conn)
 	return &whc
 }

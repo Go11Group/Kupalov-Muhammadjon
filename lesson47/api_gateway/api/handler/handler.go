@@ -13,8 +13,8 @@ type Handler struct {
 }
 
 func NewHandler(conn *grpc.ClientConn) *Handler {
-	whc := pkg.CreateWheatherServicClient(conn)
-	trc := pkg.CreateTransportServicClient(conn)
+	whc := pkg.CreateWheatherServiceClient(conn)
+	trc := pkg.CreateTransportServiceClient(conn)
 
 	return &Handler{trc, whc}
 }
