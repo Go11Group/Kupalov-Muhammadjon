@@ -48,5 +48,66 @@ func (h *Handler) GetItemById(ctx *gin.Context){
 		return
 	}
 
-	ctx.JSON(201, res)
+	ctx.JSON(200, res)
+} 
+
+func (h *Handler) GetItems(ctx *gin.Context){
+
+	res, err := h.itemRepo.GetItems(ctx)
+	if err != nil {
+		h.log.Info("Error while getting items", zap.Error(err))
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Error while getting items ",
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(200, res)
+} 
+
+func (h *Handler) UpdateItem(ctx *gin.Context){
+
+	id := ctx.Param("id")
+
+	req := models.ItemUpdate{}
+
+	err := json.NewDecoder(ctx.Request.Body).Decode(&req)
+	if err != nil {
+		h.log.Info("Error while decoding ", zap.Error(err))
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Error while decoding ",
+			"error": err.Error(),
+		})
+		return
+	}
+	req.Id = id
+
+	res, err := h.itemRepo.UpdateItem(ctx, &req)
+	if err != nil {
+		h.log.Info("Error while updating item by id", zap.Error(err))
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Error while updating item by id ",
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(200, res)
+} 
+
+func (h *Handler) DeleteItem(ctx *gin.Context){
+
+	id := ctx.Param("id")
+	err := h.itemRepo.DeleteItem(ctx, id)
+	if err != nil {
+		h.log.Info("Error while delete item by id", zap.Error(err))
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Error while delete item by id ",
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(200, "success")
 } 

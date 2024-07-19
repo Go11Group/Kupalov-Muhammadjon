@@ -9,14 +9,14 @@ import (
 
 type Handler struct {
 	itemRepo     *redis.ItemRepo
-	deliveryRepo *redis.DeliveryRepo
+	DeliveryRepo *redis.DeliveryRepo
 	log          *zap.Logger
 }
 
 func NewHandler(systemConfig *models.SystemConfig) *Handler {
 	return &Handler{
 		itemRepo:     redis.NewItemRepo(systemConfig.RedisDb),
-		deliveryRepo: redis.NewDeliveryRepo(systemConfig.RedisDb),
+		DeliveryRepo: redis.NewDeliveryRepo(systemConfig.RedisDb),
 		log:          systemConfig.Logger,
 	}
 }

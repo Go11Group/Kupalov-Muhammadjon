@@ -58,16 +58,52 @@ func (i *ItemRepo) GetItemById(ctx context.Context, id string) (*models.ItemInfo
 	return &res, err
 }
 
-func (i *ItemRepo) GetItems(ctx context.Context, id string) (*models.ItemInfo, error) {
+func (i *ItemRepo) GetItems(ctx context.Context) (*[]models.ItemInfo, error) {
 
 	data, err := i.Db.HGetAll(ctx, "items").Result()
 	if err != nil {
 		return nil, err
 	}
-	res := models.ItemInfo{}
+	res := []models.ItemInfo{}
+	for id := range data{
+		var item models.ItemInfo
 
-	err = json.Unmarshal([]byte(data), &res)
+		err = json.Unmarshal([]byte(data[id]), &item)
+		if err != nil {
+			return nil, err
+		}
+		res = append(res, item)
+	}
 
-	return &res, err
+	return &res, nil
+}
+
+func (i *ItemRepo) UpdateItem(ctx context.Context, item *models.ItemUpdate) (*models.ItemInfo, error) {
+	
+	itemInfo, err := i.GetItemById(ctx, item.Id)
+	if err != nil {
+		return nil, err
+	}
+	itemInfo.Id = item.Id
+	itemInfo.Title = item.Title
+	itemInfo.Description = item.Description
+	itemInfo.Price = item.Price
+	itemInfo.UpdatedAt = time.Now().Format(time.RFC3339)
+
+	itemData, err := json.Marshal(itemInfo)
+	if err != nil {
+		return nil, err
+	}
+
+	err = i.Db.HSet(ctx, "items", item.Id, string(itemData)).Err()
+	
+	return itemInfo, err
+}
+
+func (i *ItemRepo) DeleteItem(ctx context.Context, id string) error {
+
+	err := i.Db.HDel(ctx, "items", id).Err()
+
+	return err
 }
 
