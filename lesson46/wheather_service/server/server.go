@@ -1,29 +1,31 @@
 package main
 
 import (
-	pb "Go11Group/Kupalov-Muhammadjon/lesson46/wheather_service/genproto/WheatherService"
-	"Go11Group/Kupalov-Muhammadjon/lesson46/wheather_service/service"
-	"Go11Group/Kupalov-Muhammadjon/lesson46/wheather_service/storage/postgres"
-	"google.golang.org/grpc"
+	"database/sql"
+	"fmt"
 	"log"
-	"net"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
-	lis, err := net.Listen("tcp", ":44444")
+	// Database connection
+	connStr := "user=postgres password=root dbname=listenup_user_service sslmode=disable"
+	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatal(err)
 	}
-	db, err := postgres.ConnectDB()
+	defer db.Close()
+
+	// Assume file is uploaded to a storage service and we have the file URL
+	fileURL := "https://your-storage-service.com/path/to/audio/file.mp3"
+
+	// Insert metadata into database
+	query := `INSERT INTO episodes (podcast_id, user_id, title, description, file_url) VALUES ($1, $2, $3, $4, $5)`
+	_, err = db.Exec(query, 1, 1, "Episode 1", "Description of episode 1", fileURL)
 	if err != nil {
-		log.Fatalf("failed to connect to database: %v", err)
-	}
-	wService := service.NewWheatherService(db)
-	s := grpc.NewServer()
-	pb.RegisterWheatherServiceServer(s, wService)
-
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		log.Fatal(err)
 	}
 
+	fmt.Println("Metadata inserted successfully")
 }
