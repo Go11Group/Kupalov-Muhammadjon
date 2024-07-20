@@ -6,6 +6,7 @@ import (
 	"lesson62/pkg/logger"
 	"lesson62/storage/redis"
 
+	"github.com/casbin/casbin/v2"
 	"go.uber.org/zap"
 )
 
@@ -18,9 +19,15 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	casbinEnforcer, err := casbin.NewEnforcer("./config/model.conf", "./config/policy.csv")
+	if err != nil {
+		logger.Error("Error while loading model and policy")
+		return
+	}
 	systemConfig := &models.SystemConfig{
 		Logger: logger,
 		RedisDb: db,
+		CasbinEnforcer: casbinEnforcer,
 	}
 
 	router := api.NewRouter(systemConfig)

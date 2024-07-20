@@ -1,0 +1,8 @@
+p, admin, /items/create, POST
+p, admin, /items/{id}, GET
+p, admin, /items/all, GET
+p, admin, /items/{id}/update, PUT
+p, admin, /items/{id}/delete, DELETE
+
+p, user, /items/{id}, GET
+p, user, /items/all, GET
