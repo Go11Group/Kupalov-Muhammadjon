@@ -25,8 +25,8 @@ func main() {
 		return
 	}
 	systemConfig := &models.SystemConfig{
-		Logger: logger,
-		RedisDb: db,
+		Logger:         logger,
+		RedisDb:        db,
 		CasbinEnforcer: casbinEnforcer,
 	}
 
